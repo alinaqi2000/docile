@@ -37,7 +37,7 @@ Sit back, relax, and watch your Docile application come to life!
 
 ## Documentation
 
-For detailed information and usage examples, please refer to our comprehensive documentation. You can find it [here](https://docile-framework.com/docs).
+For detailed information and usage examples, we are preparing a comprehensive documentation for you.
 
 ## Community and Support
 
