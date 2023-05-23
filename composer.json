@@ -1,0 +1,28 @@
+{
+    "name": "alinaqi2000/docile",
+    "type": "framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Docile\\": "framework/",
+            "App\\": "app/"
+        },
+        "files": [
+            "framework/Helpers/dev.php",
+            "framework/Helpers/render.php",
+            "framework/Helpers/session.php"
+        ]
+    },
+    "autoload-dev": {},
+    "authors": [
+        {
+            "name": "Ali Naqi Al-Musawi",
+            "email": "alinaqi2000@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^10.11",
+        "vlucas/phpdotenv": "^5.5",
+        "twig/twig": "^3.6"
+    }
+}
