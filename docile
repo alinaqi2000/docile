@@ -1,0 +1,12 @@
+<?php
+
+use Docile\Console\Commands\RunServerCommand;
+
+require __DIR__ . '/vendor/autoload.php';
+
+if ($argv[1] == "deliver") {
+    $serverCommand = new RunServerCommand();
+    $serverCommand->execute();
+}
+
+die("\nInvalid Command!\n\n");

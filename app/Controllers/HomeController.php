@@ -9,15 +9,6 @@ class HomeController
 {
     public function index()
     {
-        echo 'Hello, world!';
-    }
-    public function users()
-    {
-        echo 'Hello, users!';
-    }
-    public function show(Request $request, User $user, $car)
-    {
-
         return view("index");
     }
 }
