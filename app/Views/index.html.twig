@@ -1,12 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Document</title>
+		<title>Docile - The Playful PHP Microframework</title>
+		<style>
+			body {
+				font-family: Roboto, sans-serif;
+				background-color: #f2f2f2;
+				color: #333;
+				margin: 0;
+				padding: 0;
+				letter-spacing: 0.5px;
+			}
+
+			.container {
+				width: calc(300px, 100%, 800px);
+				margin: 0 auto;
+				padding: 40px;
+				text-align: center;
+			}
+
+			h1 {
+				font-size: 48px;
+				margin-bottom: 50px;
+				color: #555;
+				line-height: .7;
+			}
+			h1 .brand {
+				display: inline-block;
+				color: #ff5f5f;
+				font-weight: bold;
+			}
+
+			.highlight::after {
+				content: "";
+				position: relative;
+				display: block;
+				bottom: 16px;
+				right: -8px;
+				height: 20px;
+				width: 140px;
+				background: #ff5f5f;
+				opacity: .3;
+				z-index: 0;
+			}
+			p {
+				font-size: 18px;
+				margin-bottom: 30px;
+			}
+
+			.button {
+				display: inline-block;
+				padding: 12px 30px;
+				background-color: #ff5f5f;
+				color: #fff;
+				font-size: 20px;
+				text-decoration: none;
+				border-radius: 4px;
+				transition: background-color 0.3s ease;
+			}
+
+			.button:hover {
+				background-color: #ff3f3f;
+			}
+		</style>
 	</head>
+
 	<body>
-		{{session("auth_user")}}
+		<div class="container">
+			<h1>Welcome to
+				<span class="brand">Docile
+					<div class="highlight"></div>
+				</span>
+				Framework</h1>
+			<p>A simple microframework for your PHP web applications and APIs</p>
+
+		</div>
 	</body>
+
 </html>
