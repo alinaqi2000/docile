@@ -5,7 +5,8 @@
     "autoload": {
         "psr-4": {
             "Docile\\": "framework/",
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\": "database/"
         },
         "files": [
             "framework/Helpers/dev.php",

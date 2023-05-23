@@ -62,7 +62,11 @@ class Router extends Docile
                 foreach ($that->routes[$method] as $route => $controller) {
                     if (count($that->matchedRoute($route, $uri))) {
                         $that->lookForModel($route);
-                        // dd($that->models);
+
+                        if (is_callable($controller)) {
+                            $controller();
+                            return;
+                        }
 
                         $that->callController($controller);
                         return;
