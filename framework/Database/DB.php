@@ -10,21 +10,37 @@ class DB extends Docile
 {
     public static function connect()
     {
+
         try {
             $capsule = new Capsule;
+            if (DB_CONNECTION == 'sqlite') {
 
-            $capsule->addConnection([
-                'driver'    => env('DB_CONNECTION'),
-                'host'      => env('DB_HOST'),
-                'port'      => env('DB_PORT'),
-                'database'  => env('DB_DATABASE'),
-                'username'  => env('DB_USERNAME'),
-                'password'  => env('DB_PASSWORD'),
-                'charset'   => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix'    => '',
-            ]);
 
+                $capsule->addConnection([
+                    'driver'    => DB_CONNECTION,
+                    'host'      => DB_HOST,
+                    'port'      => DB_PORT,
+                    'database'  => DB_PATH,
+                    'username'  => DB_USERNAME,
+                    'password'  => DB_PASSWORD,
+                    'charset'   => 'utf8',
+                    'collation' => 'utf8_unicode_ci',
+                    'prefix'    => '',
+                ]);
+            } else {
+
+                $capsule->addConnection([
+                    'driver'    => DB_CONNECTION,
+                    'host'      => DB_HOST,
+                    'port'      => DB_PORT,
+                    'database'  => DB_DATABASE,
+                    'username'  => DB_USERNAME,
+                    'password'  => DB_PASSWORD,
+                    'charset'   => 'utf8',
+                    'collation' => 'utf8_unicode_ci',
+                    'prefix'    => '',
+                ]);
+            }
             $capsule->setAsGlobal();
 
             $capsule->bootEloquent();

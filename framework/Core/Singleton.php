@@ -5,10 +5,17 @@ namespace Docile\Core;
 class Singleton
 {
     private static $instances = [];
-
     private function __construct()
     {
-        // Initialize the framework here
+    }
+    private function __clone()
+    {
+    }
+    private function __sleep()
+    {
+    }
+    private function __wakeup()
+    {
     }
 
     public static function getInstance()
@@ -23,9 +30,5 @@ class Singleton
 
     // Other methods and properties of the framework
 
-    public function run()
-    {
-        // Logic to start the framework
-        echo "Framework is running!";
-    }
+
 }

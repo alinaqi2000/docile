@@ -15,7 +15,7 @@ if (!function_exists("view")) {
 
 
 
-        echo $twig->render($viewName . '.html.twig', $data);
+        echo $twig->render($viewName . '.twig', $data);
         die();
     }
 }
