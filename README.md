@@ -21,9 +21,17 @@ Before diving into the world of Docile, make sure you have the following prerequ
 - PHP 8.1 or higher installed on your system.
 - Composer, the dependency management tool for PHP.
 
+
+Download the framework through folowing command:
+
+```bash
+git clone https://github.com/alinaqi2000/docile.git
+```
+
 To install its dependencies, run the following command:
 
 ```bash
+cd docile
 composer install
 ```
 

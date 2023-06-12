@@ -48,8 +48,4 @@ class User extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
-    public function balance()
-    {
-        return $this->bank_details()->sum("bankBalance");
-    }
 }
