@@ -22,7 +22,7 @@ Before diving into the world of Docile, make sure you have the following prerequ
 - Composer, the dependency management tool for PHP.
 
 
-Download the framework through folowing command:
+Download the framework through following command:
 
 ```bash
 git clone https://github.com/alinaqi2000/docile.git
