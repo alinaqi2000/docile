@@ -1,6 +1,8 @@
 {
     "name": "alinaqi2000/docile",
     "type": "framework",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "license": "MIT",
     "autoload": {
         "psr-4": {
