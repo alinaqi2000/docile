@@ -22,17 +22,18 @@ Before diving into the world of Docile, make sure you have the following prerequ
 - Composer, the dependency management tool for PHP.
 
 
-Download the framework through following command:
+Download and install the framework through following command:
 
 ```bash
-git clone https://github.com/alinaqi2000/docile.git
+git clone https://github.com/alinaqi2000/docile.git my-app
+cd my-app
+composer install
 ```
 
-To install its dependencies, run the following command:
+Or, install using composer:
 
 ```bash
-cd docile
-composer install
+composer create-project alinaqi2000/docile
 ```
 
 Once the installation is complete, you can start your Docile project using the following command:
