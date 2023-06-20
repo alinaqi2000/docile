@@ -25,15 +25,16 @@ Before diving into the world of Docile, make sure you have the following prerequ
 Download and install the framework through following command:
 
 ```bash
-git clone https://github.com/alinaqi2000/docile.git my-app
-cd my-app
+git clone https://github.com/alinaqi2000/docile.git awesome-app
+cd awesome-app
 composer install
 ```
 
 Or, install using composer:
 
 ```bash
-composer create-project alinaqi2000/docile
+composer create-project -s dev alinaqi2000/docile:^0.0.1 awesome-app
+cd awesome-app
 ```
 
 Once the installation is complete, you can start your Docile project using the following command:
