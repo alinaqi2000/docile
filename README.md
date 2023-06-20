@@ -33,7 +33,7 @@ composer install
 Or, install using composer:
 
 ```bash
-composer create-project -s dev alinaqi2000/docile:^0.0.1 awesome-app
+composer create-project alinaqi2000/docile awesome-app
 cd awesome-app
 ```
 
