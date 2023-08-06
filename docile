@@ -4,9 +4,14 @@ use Docile\Console\Commands\RunServerCommand;
 
 require __DIR__ . '/vendor/autoload.php';
 
-if ($argv[1] == "deliver") {
-    $serverCommand = new RunServerCommand();
-    $serverCommand->execute();
+$serverCommand = new RunServerCommand();
+switch ($argv[1]) {
+    case 'deliver':
+        $serverCommand->execute();
+        break;
+    case 'train':
+        $serverCommand->test();
+        break;
+    default:
+        die("\nInvalid Command!\n\n");
 }
-
-die("\nInvalid Command!\n\n");

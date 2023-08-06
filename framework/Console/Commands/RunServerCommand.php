@@ -3,6 +3,8 @@
 
 namespace Docile\Console\Commands;
 
+use Docile\Tests\TrainDocile;
+
 class RunServerCommand
 {
     public function execute()
@@ -15,5 +17,11 @@ class RunServerCommand
         echo "Server running on http://{$host}:{$port}\n";
 
         exec($command);
+    }
+    public function test()
+    {
+        echo "Training Docile... \n\n";
+        TrainDocile::train();
+        echo "\nDocile Trained! \n\n";
     }
 }

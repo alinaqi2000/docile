@@ -40,8 +40,20 @@ class Router extends Docile
         $that->routes["DELETE"][$route] = $controller;
     }
 
+    public function getModels()
+    {
+        $that = static::getInstance();
+        return $that->models;
+    }
+    public static function flush()
+    {
+        $that = static::getInstance();
+        $that->routes = [];
+        $that->models = [];
+        $that->matchedRoute = "";
+    }
 
-    private function addORMRoute($method, $route, $model, $action)
+    function addORMRoute($method, $route, $model, $action)
     {
         $that = static::getInstance();
 
@@ -86,7 +98,7 @@ class Router extends Docile
         }
     }
 
-    private function matchedRoute($route, $uri)
+    function matchedRoute($route, $uri)
     {
         $that = self::getInstance();
 
@@ -95,12 +107,12 @@ class Router extends Docile
         preg_match($pattern, $uri, $matches);
 
         if (!empty($matches))
-            $that->matchedRoute =  $route;
+            $that->matchedRoute = $route;
 
-        return  $matches;
+        return $matches;
     }
 
-    private function lookForModel($route)
+    function lookForModel($route)
     {
         $that = static::getInstance();
 
@@ -116,12 +128,13 @@ class Router extends Docile
 
             if (class_exists($modelClass)) {
                 $that->models[] = $modelClass;
-            } else {
-                $that->models[] = null;
             }
+            // else {
+            //     $that->models[] = null;
+            // }
         }
     }
-    private function callController($controller)
+    function callController($controller)
     {
         $that = static::getInstance();
 
@@ -143,7 +156,7 @@ class Router extends Docile
         echo '404 Not Found';
     }
 
-    private function callORMAction($model, $action)
+    function callORMAction($model, $action)
     {
         $that = self::getInstance();
 
@@ -163,7 +176,7 @@ class Router extends Docile
         echo '404 Not Found';
     }
 
-    private function getRouteParams($controllerOrModel)
+    function getRouteParams($controllerOrModel)
     {
         $that = self::getInstance();
 

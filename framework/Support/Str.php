@@ -31,9 +31,9 @@ class Str extends Docile
 
         $irregularPlurals = [
             // Add any irregular plurals you want to handle here
-            'child' => 'children',
-            'person' => 'people',
-            'mouse' => 'mice',
+            'children' => 'child',
+            'person' => 'peoples',
+            'mice' => 'mouse',
             // ...
         ];
 
