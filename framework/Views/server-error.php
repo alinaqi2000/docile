@@ -37,8 +37,10 @@
 
         .box {
             box-shadow: 0 0 16px rgba(0, 0, 0, .1);
-            padding: 15px 20px;
+            margin: 0 auto;
+            padding: 15px 30px;
             border-radius: 15px;
+            width: fit-content;
         }
 
         .highlight {
@@ -65,7 +67,7 @@
 <body>
     <div class="container">
         <div class="emoji">😱</div>
-        <h1>Oops!</h1>
+        <h2>Oops!</h2>
         <div class="box">
             <h3 class="highlight" title="<?= $title ?>"><?= $title ?? "Error!" ?></h3>
             <div class="quote">

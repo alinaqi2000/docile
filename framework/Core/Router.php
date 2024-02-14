@@ -6,7 +6,7 @@ use Docile\Docile;
 use Docile\Http\Request;
 use Docile\Support\Str;
 use Exception;
-
+use Closure;
 // ...
 
 class Router extends Docile
@@ -14,30 +14,54 @@ class Router extends Docile
     private $routes = [];
     private $models = [];
     private $matchedRoute = "";
-    public static function get($route, $controller)
+    private $recentlyAddedRoute = [];
+
+    public function middlewares($middlewares, $redirects = [])
     {
         $that = static::getInstance();
 
-        $that->routes['GET'][$route] = $controller;
+        if (is_array($middlewares)) {
+            foreach ($middlewares as $key => $middleware) {
+                $that->routes[$that->recentlyAddedRoute['method']][$that->recentlyAddedRoute['route']]['middlewares'][] = ['name' => $middleware, "redirect" => $redirects[$key]];
+            }
+        }
+    }
+    public static function get(string $route, string | Closure $controller)
+    {
+        $that = static::getInstance();
+
+        $that->routes['GET'][$route] = ['controller' => $controller];
+        $that->recentlyAddedRoute = ['method' => "GET", "route" => $route, 'controller' => $controller];
+
+        return $that;
     }
 
-    public static function post($route, $controller)
+    public static function post(string $route, string | Closure $controller)
     {
         $that = static::getInstance();
 
-        $that->routes['POST'][$route] = $controller;
+        $that->routes['POST'][$route] = ['controller' => $controller];
+        $that->recentlyAddedRoute = ['method' => "POST", "route" => $route, 'controller' => $controller];
+
+        return $that;
     }
-    public static function put($route, $controller)
+    public static function put(string $route, string | Closure $controller)
     {
         $that = static::getInstance();
 
-        $that->routes['PUT'][$route] = $controller;
+        $that->routes['PUT'][$route] = ['controller' => $controller];
+        $that->recentlyAddedRoute = ['method' => "PUT", "route" => $route, 'controller' => $controller];
+
+        return $that;
     }
-    public static function delete($route, $controller)
+    public static function delete(string $route, string | Closure $controller)
     {
         $that = static::getInstance();
 
-        $that->routes["DELETE"][$route] = $controller;
+        $that->routes["DELETE"][$route] = ['controller' => $controller];
+        $that->recentlyAddedRoute = ['method' => "DELETE", "route" => $route, 'controller' => $controller];
+
+        return $that;
     }
 
     public function getModels()
@@ -53,7 +77,7 @@ class Router extends Docile
         $that->matchedRoute = "";
     }
 
-    function addORMRoute($method, $route, $model, $action)
+    function addORMRoute(string $method, string $route, string $model, string $action)
     {
         $that = static::getInstance();
 
@@ -71,16 +95,19 @@ class Router extends Docile
             $uri = $_SERVER['REQUEST_URI'];
             $method = $_SERVER['REQUEST_METHOD'];
             if (isset($that->routes[$method])) {
-                foreach ($that->routes[$method] as $route => $controller) {
+                foreach ($that->routes[$method] as $route => $info) {
                     if (count($that->matchedRoute($route, $uri))) {
-                        $that->lookForModel($route);
 
-                        if (is_callable($controller)) {
-                            $controller();
+
+                        $that->lookForModel($route);
+                        $that->applyMiddleware($info);
+
+                        if (is_callable($info['controller'])) {
+                            $info['controller']();
                             return;
                         }
 
-                        $that->callController($controller);
+                        $that->callController($info['controller']);
                         return;
                     }
                 }
@@ -98,7 +125,7 @@ class Router extends Docile
         }
     }
 
-    function matchedRoute($route, $uri)
+    function matchedRoute(string $route, string $uri)
     {
         $that = self::getInstance();
 
@@ -112,7 +139,7 @@ class Router extends Docile
         return $matches;
     }
 
-    function lookForModel($route)
+    function lookForModel(string $route)
     {
         $that = static::getInstance();
 
@@ -134,7 +161,13 @@ class Router extends Docile
             // }
         }
     }
-    function callController($controller)
+    function applyMiddleware(array $route)
+    {
+        foreach ($route['middlewares'] as $middleware) {
+            Middleware::setup($middleware)->apply();
+        }
+    }
+    function callController(string $controller)
     {
         $that = static::getInstance();
 
@@ -156,7 +189,7 @@ class Router extends Docile
         echo '404 Not Found';
     }
 
-    function callORMAction($model, $action)
+    function callORMAction(string $model, string $action)
     {
         $that = self::getInstance();
 
@@ -176,7 +209,7 @@ class Router extends Docile
         echo '404 Not Found';
     }
 
-    function getRouteParams($controllerOrModel)
+    function getRouteParams(string $controllerOrModel)
     {
         $that = self::getInstance();
 

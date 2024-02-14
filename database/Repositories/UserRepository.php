@@ -5,8 +5,9 @@ namespace Database\Repositories;
 use Docile\Database\Repository;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class UserRepository implements Repository
+class UserRepository extends Repository
 {
+
     public static function up()
     {
         Capsule::schema()->create("users", function ($table) {
@@ -25,5 +26,9 @@ class UserRepository implements Repository
 
             $table->timestamps();
         });
+    }
+    public static function down()
+    {
+        static::drop("users");
     }
 }

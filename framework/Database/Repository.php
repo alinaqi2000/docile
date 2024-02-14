@@ -2,8 +2,7 @@
 
 namespace Docile\Database;
 
-
-interface Repository
+abstract class Repository extends DBRepository
 {
-    public static function up();
+    abstract public static function up();
 }

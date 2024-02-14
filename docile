@@ -1,17 +1,25 @@
 <?php
 
-use Docile\Console\Commands\RunServerCommand;
+use Docile\Console\Commands\RunCommand;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$serverCommand = new RunServerCommand();
+load_env();
+
+require __DIR__ . '/config/constants.php';
+
+$command = new RunCommand();
+
 switch ($argv[1]) {
     case 'deliver':
-        $serverCommand->execute();
+        $command->server();
+        break;
+    case 'migrate':
+        $command->migrate(...$argv);
         break;
     case 'train':
-        $serverCommand->test();
+        $command->test();
         break;
     default:
-        die("\nInvalid Command!\n\n");
+        console_error(INVALID_TERMINAL_COMMAND);
 }

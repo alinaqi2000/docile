@@ -7,15 +7,30 @@ use Docile\Docile;
 
 class Migration extends Docile
 {
-    public static function clear()
+
+    public static function ups($repositories)
     {
-
-        if (file_exists(DB_PATH)) {
-            unlink(DB_PATH);
+        foreach ($repositories as $repository) {
+            $repository::up();
         }
-
-        if (!file_exists(DB_PATH)) {
-            fopen(DB_PATH, "w");
+    }
+    public static function downs($repositories)
+    {
+        foreach ($repositories as $repository) {
+            $repository::down();
+        }
+    }
+    public static function clear($refresh = FALSE)
+    {
+        if (defined('DB_PATH')) {
+            if ($refresh) {
+                if (file_exists(DB_PATH)) {
+                    unlink(DB_PATH);
+                }
+            }
+            if (!file_exists(DB_PATH)) {
+                fopen(DB_PATH, "w");
+            }
         }
     }
 }

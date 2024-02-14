@@ -2,7 +2,10 @@
     "name": "alinaqi2000/docile",
     "description": "The skeleton application for the Docile framework.",
     "type": "project",
-    "keywords": ["docile", "framework"],
+    "keywords": [
+        "docile",
+        "framework"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "license": "MIT",
@@ -13,6 +16,9 @@
             "Database\\": "database/"
         },
         "files": [
+            "framework/Helpers/environment.php",
+            "framework/Helpers/codes/error_codes.php",
+            "framework/Helpers/codes/success_codes.php",
             "framework/Helpers/dev.php",
             "framework/Helpers/render.php",
             "framework/Helpers/session.php"
