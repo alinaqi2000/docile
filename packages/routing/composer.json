@@ -1,0 +1,36 @@
+{
+    "name": "docile/routing",
+    "description": "Docile attribute and fluent router with pattern matching, URL generation, and middleware support.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ali Naqi Al-Musawi",
+            "email": "alinaqi2000@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "psr/http-message": "^2.0",
+        "psr/http-server-handler": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Docile\\Routing\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Docile\\Routing\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1-dev"
+        }
+    }
+}

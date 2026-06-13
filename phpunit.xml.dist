@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         executionOrder="random"
+         resolveDependencies="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         requireCoverageMetadata="false"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="docile">
+            <directory>packages/bus/tests</directory>
+            <directory>packages/config/tests</directory>
+            <directory>packages/console/tests</directory>
+            <directory>packages/container/tests</directory>
+            <directory>packages/events/tests</directory>
+            <directory>packages/foundation/tests</directory>
+            <directory>packages/http/tests</directory>
+            <directory>packages/routing/tests</directory>
+            <directory>packages/support/tests</directory>
+            <directory>packages/validation/tests</directory>
+        </testsuite>
+    </testsuites>
+    <source restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>packages/bus/src</directory>
+            <directory>packages/config/src</directory>
+            <directory>packages/console/src</directory>
+            <directory>packages/container/src</directory>
+            <directory>packages/events/src</directory>
+            <directory>packages/foundation/src</directory>
+            <directory>packages/http/src</directory>
+            <directory>packages/routing/src</directory>
+            <directory>packages/support/src</directory>
+            <directory>packages/validation/src</directory>
+        </include>
+    </source>
+    <coverage>
+        <report>
+            <text outputFile="php://stdout" showOnlySummary="true"/>
+        </report>
+    </coverage>
+</phpunit>

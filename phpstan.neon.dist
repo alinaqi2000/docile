@@ -1,0 +1,16 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+
+parameters:
+    level: max
+    paths:
+        - packages
+    excludePaths:
+        - packages/*/tests/Fixtures/*
+    checkMissingCallableSignature: true
+    checkUninitializedProperties: true
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: false
+    tmpDir: .phpstan.cache
