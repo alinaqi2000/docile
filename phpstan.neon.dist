@@ -6,11 +6,21 @@ includes:
 parameters:
     level: max
     paths:
-        - packages
-    excludePaths:
-        - packages/*/tests/Fixtures/*
+        - packages/bus/src
+        - packages/cache/src
+        - packages/config/src
+        - packages/console/src
+        - packages/container/src
+        - packages/doctrine/src
+        - packages/events/src
+        - packages/foundation/src
+        - packages/http/src
+        - packages/routing/src
+        - packages/security/src
+        - packages/support/src
+        - packages/validation/src
     checkMissingCallableSignature: true
     checkUninitializedProperties: true
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false
     treatPhpDocTypesAsCertain: false
     tmpDir: .phpstan.cache

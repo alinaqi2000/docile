@@ -13,18 +13,23 @@
     ],
     "require": {
         "php": ">=8.3",
+        "doctrine/dbal": "^4.0",
+        "doctrine/orm": "^3.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
+        "psr/cache": "^3.0",
         "psr/clock": "^1.0",
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "psr/http-message": "^2.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "psr/simple-cache": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.5",
         "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.75"
@@ -32,28 +37,36 @@
     "autoload": {
         "psr-4": {
             "Docile\\Bus\\": "packages/bus/src/",
+            "Docile\\Cache\\": "packages/cache/src/",
             "Docile\\Config\\": "packages/config/src/",
             "Docile\\Console\\": "packages/console/src/",
             "Docile\\Container\\": "packages/container/src/",
+            "Docile\\Doctrine\\": "packages/doctrine/src/",
             "Docile\\Events\\": "packages/events/src/",
             "Docile\\Foundation\\": "packages/foundation/src/",
             "Docile\\Http\\": "packages/http/src/",
             "Docile\\Routing\\": "packages/routing/src/",
+            "Docile\\Security\\": "packages/security/src/",
             "Docile\\Support\\": "packages/support/src/",
+            "Docile\\Testing\\": "packages/testing/src/",
             "Docile\\Validation\\": "packages/validation/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Docile\\Bus\\Tests\\": "packages/bus/tests/",
+            "Docile\\Cache\\Tests\\": "packages/cache/tests/",
             "Docile\\Config\\Tests\\": "packages/config/tests/",
             "Docile\\Console\\Tests\\": "packages/console/tests/",
             "Docile\\Container\\Tests\\": "packages/container/tests/",
+            "Docile\\Doctrine\\Tests\\": "packages/doctrine/tests/",
             "Docile\\Events\\Tests\\": "packages/events/tests/",
             "Docile\\Foundation\\Tests\\": "packages/foundation/tests/",
             "Docile\\Http\\Tests\\": "packages/http/tests/",
             "Docile\\Routing\\Tests\\": "packages/routing/tests/",
+            "Docile\\Security\\Tests\\": "packages/security/tests/",
             "Docile\\Support\\Tests\\": "packages/support/tests/",
+            "Docile\\Testing\\Tests\\": "packages/testing/tests/",
             "Docile\\Validation\\Tests\\": "packages/validation/tests/"
         }
     },
