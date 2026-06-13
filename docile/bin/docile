@@ -1,0 +1,64 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+|--------------------------------------------------------------------------
+| Docile CLI Entry Point
+|--------------------------------------------------------------------------
+|
+| This script is the front controller for all console commands. Run:
+|
+|   php bin/docile <command> [options] [arguments]
+|
+| The built-in "deliver" command starts PHP's built-in HTTP server for
+| local development:
+|
+|   php bin/docile deliver
+|   php bin/docile deliver --port=8080
+|   php bin/docile deliver --host=0.0.0.0 --port=8080
+|
+*/
+
+$rootDir = dirname(__DIR__);
+
+// ── Handle the built-in "deliver" command before bootstrapping the app ────────
+if (isset($argv[1]) && $argv[1] === 'deliver') {
+    $host = 'localhost';
+    $port = 8000;
+
+    foreach (array_slice($argv, 2) as $arg) {
+        if (str_starts_with($arg, '--host=')) {
+            $host = substr($arg, 7);
+        } elseif (str_starts_with($arg, '--port=')) {
+            $port = (int) substr($arg, 7);
+        }
+    }
+
+    $docRoot = $rootDir . '/public';
+    $address = "{$host}:{$port}";
+
+    echo "Docile development server started on http://{$address}" . PHP_EOL;
+    echo "Document root: {$docRoot}" . PHP_EOL;
+    echo "Press Ctrl+C to stop." . PHP_EOL . PHP_EOL;
+
+    passthru(
+        sprintf('%s -S %s -t %s', PHP_BINARY, escapeshellarg($address), escapeshellarg($docRoot)),
+        $exitCode,
+    );
+
+    exit($exitCode);
+}
+
+// ── All other commands: bootstrap the application and run the console kernel ──
+if (!file_exists($autoload = $rootDir . '/vendor/autoload.php')) {
+    fwrite(STDERR, "Autoloader not found. Run 'composer install' first." . PHP_EOL);
+    exit(1);
+}
+
+require $autoload;
+
+$app = require $rootDir . '/bootstrap/app.php';
+
+exit($app->handleConsole($argv));

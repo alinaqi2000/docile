@@ -26,4 +26,11 @@ final class FoundationException extends RuntimeException
     {
         return new self('Docile\Console\Kernel could not be resolved from the container.');
     }
+
+    public static function invalidProvider(string $providerClass): self
+    {
+        return new self(
+            sprintf('Resolved class "%s" does not implement ServiceProviderInterface.', $providerClass),
+        );
+    }
 }

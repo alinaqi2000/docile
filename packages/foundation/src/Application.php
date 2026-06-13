@@ -35,6 +35,27 @@ final class Application
     }
 
     /**
+     * Register a service provider with the application.
+     *
+     * @param class-string<ServiceProviderInterface> $providerClass
+     */
+    public function register(string $providerClass): void
+    {
+        if (!$this->container->has($providerClass)) {
+            $this->container->bind($providerClass, $providerClass);
+        }
+
+        $provider = $this->container->get($providerClass);
+
+        if (!$provider instanceof ServiceProviderInterface) {
+            throw FoundationException::invalidProvider($providerClass);
+        }
+
+        $provider->register($this->container);
+        $provider->boot($this->container);
+    }
+
+    /**
      * Access the underlying DI container.
      */
     public function container(): ContainerInterface

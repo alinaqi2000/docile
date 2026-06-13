@@ -8,6 +8,7 @@ use Docile\Container\Container;
 use Docile\Foundation\Application;
 use Docile\Foundation\BootstrapperInterface;
 use Docile\Foundation\ExceptionHandler;
+use Docile\Foundation\ServiceProviderInterface;
 use Docile\Foundation\Tests\Fixtures\TestBootstrapper;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -66,6 +67,45 @@ final class ApplicationTest extends TestCase
     public function testContainerReturnsTheContainer(): void
     {
         self::assertSame($this->container, $this->app->container());
+    }
+
+    // -------------------------------------------------------------------------
+    // register()
+    // -------------------------------------------------------------------------
+
+    public function testRegisterCallsProviderRegisterAndBoot(): void
+    {
+        $provider = new class implements \Docile\Foundation\ServiceProviderInterface {
+            public bool $registerCalled = false;
+            public bool $bootCalled = false;
+
+            public function register(\Docile\Container\ContainerInterface $container): void
+            {
+                $this->registerCalled = true;
+            }
+
+            public function boot(\Docile\Container\ContainerInterface $container): void
+            {
+                $this->bootCalled = true;
+            }
+        };
+
+        $this->container->instance($provider::class, $provider);
+
+        $this->app->register($provider::class);
+
+        self::assertTrue($provider->registerCalled);
+        self::assertTrue($provider->bootCalled);
+    }
+
+    public function testRegisterThrowsWhenProviderDoesNotImplementInterface(): void
+    {
+        $this->container->instance('BadProvider', new \stdClass());
+
+        $this->expectException(\Docile\Foundation\Exception\FoundationException::class);
+        $this->expectExceptionMessage('does not implement ServiceProviderInterface');
+
+        $this->app->register('BadProvider');
     }
 
     // -------------------------------------------------------------------------

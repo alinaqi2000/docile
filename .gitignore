@@ -22,3 +22,8 @@ coverage.xml
 
 # legacy local db artifacts
 legacy/database/*.sqlite
+
+# AI tools
+.claude/
+.devin/
+.cursor/
