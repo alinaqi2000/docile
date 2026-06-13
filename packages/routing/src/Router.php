@@ -152,13 +152,18 @@ final class Router
     {
         $fullPath = $this->normalisePath($this->groupPrefix . '/' . ltrim($path, '/'));
 
-        return new RouteBuilder(
+        $builder = new RouteBuilder(
             collection: $this->routes,
             methods: $methods,
             path: $fullPath,
             handler: $handler,
             groupMiddleware: $this->groupMiddleware,
         );
+
+        // Auto-commit the route to the collection
+        $builder->getDefinition();
+
+        return $builder;
     }
 
     /**

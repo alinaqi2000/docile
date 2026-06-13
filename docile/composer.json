@@ -20,13 +20,14 @@
         "docile/container": "^1.0",
         "docile/doctrine": "^1.0",
         "docile/events": "^1.0",
-        "docile/foundation": "^1.0",
+        "docile/foundation": "^1.0.1",
         "docile/http": "^1.0",
-        "docile/routing": "^1.0",
+        "docile/routing": "^1.0.1",
         "docile/security": "^1.0",
         "docile/support": "^1.0",
         "docile/testing": "^1.0",
-        "docile/validation": "^1.0"
+        "docile/validation": "^1.0",
+        "nyholm/psr7-server": "^1.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -52,10 +53,6 @@
         "sort-packages": true
     },
     "extra": {
-        "docile": {
-            "providers": [
-                "App\\Providers\\AppServiceProvider"
-            ]
-        }
+        "docile": []
     }
 }

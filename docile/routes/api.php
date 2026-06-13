@@ -19,8 +19,8 @@ use Docile\Routing\Router;
 |
 */
 
-/** @var Router $router */
-
-$router->get('/ping', static function (): array {
-    return ['status' => 'ok'];
-});
+return function (Router $router): void {
+    $router->get('/ping', static function (): array {
+        return ['status' => 'ok'];
+    });
+};

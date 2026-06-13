@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Docile\Foundation\ServiceProvider;
+use Docile\Container\ContainerInterface;
+use Docile\Foundation\AbstractServiceProvider;
 
-final class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends AbstractServiceProvider
 {
     /**
      * Register application services into the container.
      */
-    public function register(): void
+    public function register(ContainerInterface $container): void
     {
         // Bind your own services here, e.g.:
-        // $this->app->bind(SomeInterface::class, SomeImplementation::class);
+        // $container->bind(SomeInterface::class, SomeImplementation::class);
     }
 
     /**
@@ -22,7 +23,7 @@ final class AppServiceProvider extends ServiceProvider
      *
      * Called after all providers have been registered.
      */
-    public function boot(): void
+    public function boot(ContainerInterface $container): void
     {
         //
     }

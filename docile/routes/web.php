@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Docile\Http\HtmlResponse;
 use Docile\Routing\Router;
 
 /*
@@ -21,6 +22,4 @@ use Docile\Routing\Router;
 
 /** @var Router $router */
 
-$router->get('/', static function (): string {
-    return 'Welcome to Docile!';
-});
+$router->get('/', static fn () => HtmlResponse::make('<h1>Welcome to Docile!</h1>'));

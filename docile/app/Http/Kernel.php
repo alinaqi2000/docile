@@ -20,23 +20,12 @@ final class Kernel implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $uri = $request->getUri()->getPath();
-        $method = $request->getMethod();
+        $result = $this->router->dispatch($request);
 
-        $result = $this->router->match($method, $uri);
-
-        if ($result === null) {
-            return JsonResponse::make(['error' => 'Not found'], 404);
-        }
-
-        $handler = $result->handler;
+        $handler = $result->definition->handler;
 
         if (is_callable($handler)) {
             $response = $handler($request);
-
-            if (!$response instanceof ResponseInterface) {
-                $response = JsonResponse::make(['data' => $response]);
-            }
 
             return $response;
         }
