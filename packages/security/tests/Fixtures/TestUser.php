@@ -12,6 +12,7 @@ final class TestUser implements UserInterface
         private readonly int $id,
         private readonly string $email,
         private readonly string $passwordHash,
+        private readonly ?string $apiKey = null,
     ) {}
 
     public function getId(): int|string
@@ -27,5 +28,10 @@ final class TestUser implements UserInterface
     public function getPasswordHash(): string
     {
         return $this->passwordHash;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
     }
 }

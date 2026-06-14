@@ -29,7 +29,7 @@ final class SessionGuardTest extends TestCase
         $this->guard = new SessionGuard($this->provider, $this->hasher);
         $this->session = [];
 
-        $user = new TestUser(1, 'user@example.com', $this->hasher->hash('password'));
+        $user = new TestUser(1, 'user@example.com', $this->hasher->hash('password'), null);
         $this->provider->addUser($user);
     }
 
@@ -115,7 +115,7 @@ final class SessionGuardTest extends TestCase
 
     public function testMultipleUsersCanBeAuthenticated(): void
     {
-        $user2 = new TestUser(2, 'user2@example.com', $this->hasher->hash('password2'));
+        $user2 = new TestUser(2, 'user2@example.com', $this->hasher->hash('password2'), null);
         $this->provider->addUser($user2);
 
         $session1 = [];
