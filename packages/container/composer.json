@@ -1,0 +1,40 @@
+{
+    "name": "docile/container",
+    "description": "Docile's PSR-11 autowiring dependency injection container with scopes, contextual bindings, and attribute support.",
+    "type": "library",
+    "keywords": ["docile", "container", "di", "psr-11", "autowiring", "ioc"],
+    "homepage": "https://github.com/docile-php/docile",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ali Naqi Al-Musawi",
+            "email": "alinaqi2000@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "psr/container": "^2.0"
+    },
+    "provide": {
+        "psr/container-implementation": "2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Docile\\Container\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Docile\\Container\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1-dev"
+        }
+    }
+}

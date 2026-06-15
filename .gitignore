@@ -1,2 +1,29 @@
-vendor
+# dependencies
+/vendor/
 composer.lock
+
+# tool caches
+/.phpunit.cache/
+/.phpstan.cache/
+/.php-cs-fixer.cache
+/coverage/
+coverage.xml
+.phpunit.result.cache
+
+# editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# local env
+.env
+!.env.example
+
+# legacy local db artifacts
+legacy/database/*.sqlite
+
+# AI tools
+.claude/
+.devin/
+.cursor/

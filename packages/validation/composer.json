@@ -1,0 +1,15 @@
+{
+  "name": "docile/validation",
+  "description": "Docile attribute-based validator for typed DTOs with built-in and custom constraint rules.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [{"name": "Ali Naqi Al-Musawi", "email": "alinaqi2000@gmail.com"}],
+  "require": {
+    "php": ">=8.3"
+  },
+  "autoload": {"psr-4": {"Docile\\Validation\\": "src/"}},
+  "autoload-dev": {"psr-4": {"Docile\\Validation\\Tests\\": "tests/"}},
+  "minimum-stability": "stable",
+  "config": {"sort-packages": true},
+  "extra": {"branch-alias": {"dev-main": "0.1-dev"}}
+}
