@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Docile\Security\Auth;
 
+use Docile\Security\Auth\Token\JwtCodec;
+use Docile\Security\Auth\Token\TokenGuard;
 use Docile\Security\Exception\AuthenticationException;
+use Docile\Security\Exception\InvalidTokenException;
 use Docile\Security\Password\HasherInterface;
 use Override;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use function count;
 use function is_array;
 use function is_int;
 use function is_string;
@@ -25,6 +28,8 @@ final class AuthMiddleware implements MiddlewareInterface
     public function __construct(
         private readonly UserProviderInterface $provider,
         private readonly HasherInterface $hasher,
+        private readonly string $jwtSecret,
+        private readonly ClockInterface $clock,
     ) {}
 
     #[Override]
@@ -77,19 +82,20 @@ final class AuthMiddleware implements MiddlewareInterface
             return null;
         }
 
-        $token = substr($authorization, 7);
+        $codec = new JwtCodec($this->clock);
+        $guard = new TokenGuard($codec);
 
-        $parts = explode('.', $token);
-        if (count($parts) !== 3) {
+        try {
+            $claims = $guard->authenticate($authorization, $this->jwtSecret);
+        } catch (InvalidTokenException) {
             return null;
         }
 
-        $payload = json_decode(base64_decode(strtr($parts[1], '-_', '+/'), true), true);
-        if (!is_array($payload) || !isset($payload['sub'])) {
+        $userId = $claims['sub'] ?? null;
+        if ($userId === null) {
             return null;
         }
 
-        $userId = $payload['sub'];
         if (!is_int($userId) && !is_string($userId)) {
             return null;
         }

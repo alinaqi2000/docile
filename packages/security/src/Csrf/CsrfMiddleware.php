@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace Docile\Security\Csrf;
 
 use Docile\Security\Exception\CsrfTokenMismatchException;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function in_array;
+use function is_array;
+use function is_string;
 
 final class CsrfMiddleware implements MiddlewareInterface
 {
@@ -19,7 +24,7 @@ final class CsrfMiddleware implements MiddlewareInterface
         private readonly CsrfTokenManager $manager,
     ) {}
 
-    #[\Override]
+    #[Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $method = $request->getMethod();

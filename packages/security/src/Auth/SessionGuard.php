@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Docile\Security\Auth;
 
-use Docile\Security\Exception\AuthenticationException;
 use Docile\Security\Password\HasherInterface;
+
+use function is_int;
+use function is_string;
 
 final class SessionGuard
 {

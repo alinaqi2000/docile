@@ -22,8 +22,10 @@ use Docile\Security\Password\SodiumHasher;
 use Docile\Security\RateLimit\RateLimiterInterface;
 use Docile\Security\RateLimit\RateLimitMiddleware;
 use Docile\Security\RateLimit\TokenBucketLimiter;
+use Docile\Security\SignedUrl\UrlSigner;
 use Docile\Support\Clock\SystemClock;
 use Override;
+use Psr\Clock\ClockInterface;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 
@@ -38,7 +40,17 @@ final class SecurityServiceProvider extends AbstractServiceProvider
 
         $container->singleton(GateInterface::class, Gate::class);
 
-        $container->singleton(JwtCodec::class, JwtCodec::class);
+        $container->singleton(ClockInterface::class, SystemClock::class);
+
+        $container->singleton(JwtCodec::class, function (ContainerInterface $container) {
+            $clock = $container->make(ClockInterface::class);
+
+            if (!$clock instanceof ClockInterface) {
+                throw new RuntimeException('Expected ClockInterface instance.');
+            }
+
+            return new JwtCodec($clock);
+        });
 
         $container->singleton(TokenGuard::class, function (ContainerInterface $container) {
             $codec = $container->make(JwtCodec::class);
@@ -71,7 +83,13 @@ final class SecurityServiceProvider extends AbstractServiceProvider
                 throw new RuntimeException('Expected CacheInterface instance.');
             }
 
-            return new TokenBucketLimiter($cache, new SystemClock());
+            $clock = $container->make(ClockInterface::class);
+
+            if (!$clock instanceof ClockInterface) {
+                throw new RuntimeException('Expected ClockInterface instance.');
+            }
+
+            return new TokenBucketLimiter($cache, $clock);
         });
 
         $container->singleton(RateLimitMiddleware::class, function (ContainerInterface $container) {
@@ -82,6 +100,16 @@ final class SecurityServiceProvider extends AbstractServiceProvider
             }
 
             return new RateLimitMiddleware($limiter);
+        });
+
+        $container->singleton(UrlSigner::class, function (ContainerInterface $container) {
+            $clock = $container->make(ClockInterface::class);
+
+            if (!$clock instanceof ClockInterface) {
+                throw new RuntimeException('Expected ClockInterface instance.');
+            }
+
+            return new UrlSigner($clock);
         });
 
         $container->singleton(SessionGuard::class, function (ContainerInterface $container) {
@@ -129,7 +157,21 @@ final class SecurityServiceProvider extends AbstractServiceProvider
                 throw new RuntimeException('Expected HasherInterface instance.');
             }
 
-            return new AuthMiddleware($provider, $hasher);
+            $clock = $container->make(ClockInterface::class);
+
+            if (!$clock instanceof ClockInterface) {
+                throw new RuntimeException('Expected ClockInterface instance.');
+            }
+
+            $jwtSecret = $container->has('config.jwt.secret')
+                ? $container->make('config.jwt.secret')
+                : throw new RuntimeException('JWT secret not configured.');
+
+            if (!is_string($jwtSecret)) {
+                throw new RuntimeException('JWT secret must be a string.');
+            }
+
+            return new AuthMiddleware($provider, $hasher, $jwtSecret, $clock);
         });
     }
 

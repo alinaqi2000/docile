@@ -13,6 +13,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 #[CoversClass(AuthMiddleware::class)]
@@ -22,6 +23,7 @@ final class AuthMiddlewareTest extends TestCase
     private TestUserProvider $provider;
     private SodiumHasher $hasher;
     private Psr17Factory $factory;
+    private ClockInterface $clock;
     /** @var array<string, mixed> */
     private array $session;
 
@@ -31,7 +33,9 @@ final class AuthMiddlewareTest extends TestCase
 
         $this->provider = new TestUserProvider();
         $this->hasher = new SodiumHasher();
-        $this->middleware = new AuthMiddleware($this->provider, $this->hasher);
+        $this->clock = $this->createMock(ClockInterface::class);
+        $this->clock->method('now')->willReturn(new \DateTimeImmutable('@' . time()));
+        $this->middleware = new AuthMiddleware($this->provider, $this->hasher, 'secret', $this->clock);
         $this->factory = new Psr17Factory();
         $this->session = [];
 
@@ -57,10 +61,10 @@ final class AuthMiddlewareTest extends TestCase
     public function testProcessAddsUserViaBearerToken(): void
     {
         $payload = json_encode(['sub' => 1, 'exp' => time() + 3600]);
-        $header = base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
-        $payloadEncoded = base64_encode($payload);
+        $header = $this->base64UrlEncode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
+        $payloadEncoded = $this->base64UrlEncode($payload);
         $signature = hash_hmac('sha256', $header . '.' . $payloadEncoded, 'secret', true);
-        $signatureEncoded = rtrim(strtr(base64_encode($signature), '+/', '-_'), '=');
+        $signatureEncoded = $this->base64UrlEncode($signature);
         $token = $header . '.' . $payloadEncoded . '.' . $signatureEncoded;
 
         $request = $this->factory->createServerRequest('GET', '/test')
@@ -117,10 +121,10 @@ final class AuthMiddlewareTest extends TestCase
     public function testProcessPrefersBearerTokenOverApiKey(): void
     {
         $payload = json_encode(['sub' => 1, 'exp' => time() + 3600]);
-        $header = base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
-        $payloadEncoded = base64_encode($payload);
+        $header = $this->base64UrlEncode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
+        $payloadEncoded = $this->base64UrlEncode($payload);
         $signature = hash_hmac('sha256', $header . '.' . $payloadEncoded, 'secret', true);
-        $signatureEncoded = rtrim(strtr(base64_encode($signature), '+/', '-_'), '=');
+        $signatureEncoded = $this->base64UrlEncode($signature);
         $token = $header . '.' . $payloadEncoded . '.' . $signatureEncoded;
 
         $request = $this->factory->createServerRequest('GET', '/test')
@@ -176,10 +180,10 @@ final class AuthMiddlewareTest extends TestCase
     public function testProcessHandlesExpiredToken(): void
     {
         $payload = json_encode(['sub' => 1, 'exp' => time() - 3600]);
-        $header = base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
-        $payloadEncoded = base64_encode($payload);
+        $header = $this->base64UrlEncode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
+        $payloadEncoded = $this->base64UrlEncode($payload);
         $signature = hash_hmac('sha256', $header . '.' . $payloadEncoded, 'secret', true);
-        $signatureEncoded = rtrim(strtr(base64_encode($signature), '+/', '-_'), '=');
+        $signatureEncoded = $this->base64UrlEncode($signature);
         $token = $header . '.' . $payloadEncoded . '.' . $signatureEncoded;
 
         $request = $this->factory->createServerRequest('GET', '/test')
@@ -225,5 +229,10 @@ final class AuthMiddlewareTest extends TestCase
             ->willReturn($response);
 
         return $handler;
+    }
+
+    private function base64UrlEncode(string $data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 }

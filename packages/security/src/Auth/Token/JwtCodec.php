@@ -5,10 +5,19 @@ declare(strict_types=1);
 namespace Docile\Security\Auth\Token;
 
 use Docile\Security\Exception\InvalidTokenException;
+use Psr\Clock\ClockInterface;
+
+use function count;
+use function is_array;
+use function is_int;
 
 final class JwtCodec
 {
     private const string ALGORITHM = 'HS256';
+
+    public function __construct(
+        private readonly ClockInterface $clock,
+    ) {}
 
     /** Encode claims into a JWT token. */
     /** @param array<string, mixed> $claims */
@@ -19,7 +28,7 @@ final class JwtCodec
             'alg' => self::ALGORITHM,
         ];
 
-        $now = time();
+        $now = $this->clock->now()->getTimestamp();
         $payload = $claims + [
             'iat' => $now,
             'exp' => $now + $ttl,
@@ -63,7 +72,7 @@ final class JwtCodec
             throw new InvalidTokenException('Token missing expiration.');
         }
 
-        if ($payload['exp'] < time()) {
+        if ($payload['exp'] < $this->clock->now()->getTimestamp()) {
             throw new InvalidTokenException('Token has expired.');
         }
 

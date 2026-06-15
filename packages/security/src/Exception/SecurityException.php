@@ -6,4 +6,4 @@ namespace Docile\Security\Exception;
 
 use RuntimeException;
 
-class SecurityException extends RuntimeException {}
+abstract class SecurityException extends RuntimeException {}

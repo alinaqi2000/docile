@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docile\Security\RateLimit;
 
-use Psr\SimpleCache\CacheInterface;
+use Override;
 use Psr\Clock\ClockInterface;
+use Psr\SimpleCache\CacheInterface;
+
+use function is_array;
+use function is_int;
 
 final class TokenBucketLimiter implements RateLimiterInterface
 {
@@ -14,7 +18,7 @@ final class TokenBucketLimiter implements RateLimiterInterface
         private readonly ClockInterface $clock,
     ) {}
 
-    #[\Override]
+    #[Override]
     public function attempt(string $key, int $maxAttempts, int $decaySeconds): bool
     {
         $now = $this->clock->now()->getTimestamp();
@@ -50,7 +54,7 @@ final class TokenBucketLimiter implements RateLimiterInterface
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function remaining(string $key, int $maxAttempts): int
     {
         $data = $this->cache->get($key);
@@ -72,7 +76,7 @@ final class TokenBucketLimiter implements RateLimiterInterface
         return max(0, $maxAttempts - $data['attempts']);
     }
 
-    #[\Override]
+    #[Override]
     public function reset(string $key): void
     {
         $this->cache->delete($key);

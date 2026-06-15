@@ -8,18 +8,22 @@ use Docile\Security\Auth\Token\JwtCodec;
 use Docile\Security\Exception\InvalidTokenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
 
 #[CoversClass(JwtCodec::class)]
 final class JwtCodecTest extends TestCase
 {
     private JwtCodec $codec;
     private string $secret;
+    private ClockInterface $clock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->codec = new JwtCodec();
+        $this->clock = $this->createMock(ClockInterface::class);
+        $this->clock->method('now')->willReturn(new \DateTimeImmutable('@' . time()));
+        $this->codec = new JwtCodec($this->clock);
         $this->secret = 'test-secret-key';
     }
 

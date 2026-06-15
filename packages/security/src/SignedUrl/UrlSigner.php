@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace Docile\Security\SignedUrl;
 
+use Psr\Clock\ClockInterface;
+
+use function is_int;
+use function is_string;
+
 final class UrlSigner
 {
+    public function __construct(
+        private readonly ClockInterface $clock,
+    ) {}
+
     /** Sign a URL with a signature and expiration. */
     public function sign(string $url, string $secret, int $ttl = 3600): string
     {
-        $expires = time() + $ttl;
+        $expires = $this->clock->now()->getTimestamp() + $ttl;
 
         $parsed = parse_url($url);
 
@@ -101,7 +110,7 @@ final class UrlSigner
         $signature = $params['signature'];
         $expires = (int) $params['expires'];
 
-        if ($expires < time()) {
+        if ($expires < $this->clock->now()->getTimestamp()) {
             return false;
         }
 

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Docile\Security\RateLimit;
 
 use Docile\Security\Exception\TooManyRequestsException;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function is_string;
 
 final class RateLimitMiddleware implements MiddlewareInterface
 {
@@ -18,7 +21,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
         private readonly int $decaySeconds = 60,
     ) {}
 
-    #[\Override]
+    #[Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $key = $this->resolveKey($request);

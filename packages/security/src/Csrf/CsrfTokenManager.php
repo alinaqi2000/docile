@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Docile\Security\Csrf;
 
+use function is_string;
+
 final class CsrfTokenManager
 {
     private const string SESSION_KEY = '_csrf_token';

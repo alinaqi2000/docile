@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Docile\Security\Password;
 
+use Override;
+
 final class SodiumHasher implements HasherInterface
 {
-    #[\Override]
+    #[Override]
     public function hash(string $plain): string
     {
         return sodium_crypto_pwhash_str(
@@ -16,13 +18,13 @@ final class SodiumHasher implements HasherInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function verify(string $plain, string $hash): bool
     {
         return sodium_crypto_pwhash_str_verify($hash, $plain);
     }
 
-    #[\Override]
+    #[Override]
     public function needsRehash(string $hash): bool
     {
         return sodium_crypto_pwhash_str_needs_rehash(

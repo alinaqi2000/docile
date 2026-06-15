@@ -7,6 +7,7 @@ namespace Docile\Security\Tests\SignedUrl;
 use Docile\Security\SignedUrl\UrlSigner;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
 
 #[CoversClass(UrlSigner::class)]
 final class UrlSignerTest extends TestCase
@@ -18,7 +19,9 @@ final class UrlSignerTest extends TestCase
     {
         parent::setUp();
 
-        $this->signer = new UrlSigner();
+        $clock = $this->createMock(\Psr\Clock\ClockInterface::class);
+        $clock->method('now')->willReturn(new \DateTimeImmutable('@' . time()));
+        $this->signer = new UrlSigner($clock);
         $this->secret = 'test-secret-key';
     }
 
@@ -142,9 +145,15 @@ final class UrlSignerTest extends TestCase
     {
         $url = 'https://example.com/path';
 
-        $signed1 = $this->signer->sign($url, $this->secret);
-        sleep(1);
-        $signed2 = $this->signer->sign($url, $this->secret);
+        $clock1 = $this->createMock(ClockInterface::class);
+        $clock1->method('now')->willReturn(new \DateTimeImmutable('@' . time()));
+        $signer1 = new UrlSigner($clock1);
+        $signed1 = $signer1->sign($url, $this->secret);
+
+        $clock2 = $this->createMock(ClockInterface::class);
+        $clock2->method('now')->willReturn(new \DateTimeImmutable('@' . (time() + 1)));
+        $signer2 = new UrlSigner($clock2);
+        $signed2 = $signer2->sign($url, $this->secret);
 
         $this->assertNotSame($signed1, $signed2);
     }

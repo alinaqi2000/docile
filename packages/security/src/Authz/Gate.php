@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Docile\Security\Authz;
 
 use Docile\Security\Auth\UserInterface;
+use Override;
+
+use function count;
+use function is_object;
 
 final class Gate implements GateInterface
 {
@@ -14,7 +18,7 @@ final class Gate implements GateInterface
     /** @var array<string, string> */
     private array $policies = [];
 
-    #[\Override]
+    #[Override]
     /** @param callable(UserInterface|null, mixed...): bool $callback */
     public function define(string $ability, callable $callback): void
     {
@@ -27,10 +31,10 @@ final class Gate implements GateInterface
         $this->policies[$model] = $policyClass;
     }
 
-    #[\Override]
+    #[Override]
     public function allows(string $ability, mixed ...$args): bool
     {
-        $user = array_shift($args);
+        $user = array_shift($args) ?? null;
 
         if ($user !== null && !$user instanceof UserInterface) {
             return false;
@@ -61,7 +65,7 @@ final class Gate implements GateInterface
         return false;
     }
 
-    #[\Override]
+    #[Override]
     public function denies(string $ability, mixed ...$args): bool
     {
         return !$this->allows($ability, ...$args);

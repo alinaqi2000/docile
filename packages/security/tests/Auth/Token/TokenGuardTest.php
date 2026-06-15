@@ -9,6 +9,7 @@ use Docile\Security\Auth\Token\TokenGuard;
 use Docile\Security\Exception\InvalidTokenException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
 
 #[CoversClass(TokenGuard::class)]
 final class TokenGuardTest extends TestCase
@@ -16,12 +17,15 @@ final class TokenGuardTest extends TestCase
     private TokenGuard $guard;
     private JwtCodec $codec;
     private string $secret;
+    private ClockInterface $clock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->codec = new JwtCodec();
+        $this->clock = $this->createMock(ClockInterface::class);
+        $this->clock->method('now')->willReturn(new \DateTimeImmutable('@' . time()));
+        $this->codec = new JwtCodec($this->clock);
         $this->guard = new TokenGuard($this->codec);
         $this->secret = 'test-secret-key';
     }
